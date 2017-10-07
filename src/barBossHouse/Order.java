@@ -1,7 +1,7 @@
 package barBossHouse;
 
 /**
- * Класс {@code src.barBossHouse.Order} представляет реализацию свойств заказа, основных манипуляций с ним.
+ * Класс {@code Order} представляет реализацию свойств заказа, основных манипуляций с ним.
  */
 public class Order {
     /** Массив блюд */
@@ -11,31 +11,31 @@ public class Order {
     private int dishesAmount;
 
     /** Начальная емкость массива */
-    private static final int defaultCapacity = 16;
+    private static final int DEFAULT_CAPACITY = 16;
 
     /** Степень увеличения емкости массива при ее недостатке */
-    private static final int degreeOfIncrease = 2;
+    private static final int DEGREE_OF_INCREASE = 2;
 
     /**
-     * Инициализирует новый {@code src.barBossHouse.Order} объект
+     * Инициализирует новый {@code sOrder} объект
      */
     public Order() {
-        dishes = new Dish[defaultCapacity];
+        dishes = new Dish[DEFAULT_CAPACITY];
     }
 
     /**
-     * Инициализирует новый {@code src.barBossHouse.Order} объект
+     * Инициализирует новый {@code Order} объект с заданной омкостью заказа
      * @param capacity
-     *          Емкость
+     *          емкость
      */
     public Order(int capacity) {
         dishes = new Dish[capacity];
     }
 
     /**
-     * Инициализирует новый {@code src.barBossHouse.Order} объект
+     * Инициализирует новый {@code Order} объект
      * @param dishes
-     *          Массив блюд
+     *          массив блюд
      */
     public Order(Dish[] dishes) {
         this.dishes = dishes;
@@ -54,7 +54,7 @@ public class Order {
     /**
      * Добаляет блюдо в массив.
      * @param dish
-     *          Блюдо
+     *          блюдо
      * @return {@code true}, если блюдо добавдено, иначе - {@code false}
      */
     public boolean addDish(Dish dish) {
@@ -65,7 +65,7 @@ public class Order {
                 return true;
             }
         }
-        Dish[] newDishes = new Dish[dishes.length * degreeOfIncrease];
+        Dish[] newDishes = new Dish[dishes.length * DEGREE_OF_INCREASE];
         System.arraycopy(dishes, 0, newDishes, 0, dishes.length);
         newDishes[dishes.length] = dish;
         dishes = newDishes;
@@ -74,14 +74,15 @@ public class Order {
     }
 
     /**
-     * Удаляет первое найденное блюдо с данным именем.
+     * Удаляет первое найденное блюдо с заданным название.
      * @param name
+     *          название
      * @return {@code true}, если блюдо удалено, иначе - {@code false}
      */
     private boolean removeDish(String name){
         for (int i = 0; i < dishes.length; i++) {
             if(dishes[i].getName() == name){
-                System.arraycopy(dishes, i + 1, dishes, i, dishes.length - i);
+                System.arraycopy(dishes, i + 1, dishes, i, dishes.length - i - 2);
                 dishesAmount--;
                 return true;
             }
@@ -90,9 +91,9 @@ public class Order {
     }
 
     /**
-     * Удаляет все блюда с данным именем.
-     * @param name
-     * @return Число удаленных блюд
+     * Удаляет все блюда с заданным название.
+     * @param name название
+     * @return число удаленных блюд
      */
     private int removeDishes(String name){
         int counter = 0;
@@ -106,7 +107,7 @@ public class Order {
     /**
      * @return общее чисо блюд.
      */
-    private int getDishesAmount(){
+    public int getDishesAmount(){
         return dishesAmount;
     }
 
@@ -114,8 +115,11 @@ public class Order {
      * @return массив блюд.
      */
     public Dish[] getDishes(){
-        Dish[] newDishes = new Dish[getDishesAmount()];
-        System.arraycopy(dishes, 0, newDishes, 0, dishesAmount - 1);
+        Dish[] newDishes = new Dish[dishesAmount];
+        System.arraycopy(dishes, 0, newDishes, 0, dishesAmount);
+        for (int i = 0; i < newDishes.length; i++) {
+            System.out.println(newDishes[i]);
+        }
         return newDishes;
     }
 
@@ -136,7 +140,7 @@ public class Order {
      */
     public int getDishesAmount(String name){
         int counter = 0;
-        for (int i = 0; i < getDishesAmount(); i++) {
+        for (int i = 0; i < dishesAmount; i++) {
             if(dishes[i].getName() == name){
                 counter++;
             }
@@ -147,9 +151,9 @@ public class Order {
     /**
      * @return массив названий заказанных блюд.
      */
-    private String[] getNamesOfDishes(){
+    private String[] getDishesNames(){
         String[] names = new String[dishesAmount];
-        for (int i = 0; i < getDishesAmount(); i++) {
+        for (int i = 0; i < dishesAmount; i++) {
             for (int j = 0; j < i; j++) {
                 if(names[j] == dishes[i].getName()){
                     break;
@@ -165,9 +169,9 @@ public class Order {
     /**
      * @return отсортированный массив блюд.
      */
-    private Dish[] getSortedDishes(){
+    public Dish[] getSortedDishes(){
         Dish[] newDishes = getDishes();
-        Sorter.bubbleSort(newDishes);
+        Sorter.quickSort(newDishes, 0, newDishes.length - 1);
         return newDishes;
     }
 

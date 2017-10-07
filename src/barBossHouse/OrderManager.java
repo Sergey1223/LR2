@@ -1,7 +1,7 @@
 package barBossHouse;
 
 /**
- * Класс {@code Order} представляет реализацию поведения менеджера заказов.
+ * Класс {@code Order} представляет реализацию поведения и свойств менеджера заказов.
  */
 public class OrderManager {
     /** Массив заказов */
@@ -12,10 +12,12 @@ public class OrderManager {
 
     /** Список названий доступных блюд */
     public static String[] namesOfDishes = { "Уха", "Борщ", "Мороженное", "Кофе", "Стейк", "Салат", "Соленья"};
+
+    /** Список доступных описаний блюд */
     public static String[] specificationsOfDishes = { "Горячее", "Горячее", "Холодное", "Горячее", "Жаренное", "Теплое", "Слабосоленое"};
 
     /**
-     * Инициализирует новый {@code Order} объект.
+     * Инициализирует новый {@code Order} объект c заданным числом столов.
      * @param numOfTables
      *          число столов
      */
@@ -26,10 +28,8 @@ public class OrderManager {
 
     /**
      * Добавляет новый заказ в массив под указанным номером
-     * @param number
-     *          номер стола
-     * @param order
-     *          заказ
+     * @param number номер стола
+     * @param order аказ
      */
     public void addOrder(int number, Order order){
         try{
@@ -84,7 +84,7 @@ public class OrderManager {
      * Возвращает номер первого свободного стола.
      * @return номер
      */
-    private int getNumberOfEmptyTable(){
+    private int getEmptyTableNumber(){
         for (int i = 0; i < orders.length; i++) {
             if(orders[i] == null){
                 return i + 1;
@@ -97,7 +97,7 @@ public class OrderManager {
      * Возвращает все номера свободных столов.
      * @return массив номеров
      */
-    private int[] getNumbersOfEmptyTables(){
+    private int[] getEmptyTablesNumbers(){
         int[] arr = new int[orders.length - numOdFilledTables];
         for (int i = 0, j = 0; i < orders.length; i++) {
             if(orders[i] == null){
@@ -112,7 +112,7 @@ public class OrderManager {
      * Возвращает все номера занятых столов.
      * @return
      */
-    public int[] getNumbersOfFilledTables(){
+    public int[] getFilledTablesNumbers(){
         int[] arr = new int[numOdFilledTables];
         for (int i = 0, j = 0; i < orders.length; i++) {
             if(orders[i] != null){
@@ -155,7 +155,7 @@ public class OrderManager {
      * @param name название
      * @return число порций
      */
-    public int getAmountOfDishes(String name){
+    public int getDishesAmount(String name){
         int count = 0;
         for (int i = 0; i < orders.length; i++){
             if(orders[i] != null){

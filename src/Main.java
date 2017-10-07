@@ -36,10 +36,13 @@ public class Main {
         }
         System.out.println(orderManager.toString());
         int temp = random.nextInt(NUM_OF_TABLES) + 1;
-        orderManager.clearTable(orderManager.getNumbersOfFilledTables()[0]);
+        orderManager.clearTable(orderManager.getFilledTablesNumbers()[0]);
         System.out.println("Стол " + temp + " освобожден.");
-
         System.out.println("Общая стоимость всех заказов: " + orderManager.getTotalPrice());
-
+        Order order = orderManager.getOrder(orderManager.getFilledTablesNumbers()[0]);
+        System.out.println("Заказ до сортировки:");
+        order.toString();
+        Order order1 = new Order(order.getSortedDishes());
+        System.out.println("Заказ после сортировки:\n" + order1.toString());
     }
 }

@@ -1,7 +1,7 @@
 package barBossHouse;
 
 /**
- * Класс {@code src.barBossHouse.Dish} представляет реализацию свойст блюда.
+ * Класс {@code Dish} представляет реализацию свойст блюда.
  */
 
 public class Dish {
@@ -11,16 +11,16 @@ public class Dish {
     private String specification;
     /** Цена за порцию блюда. */
     private double price;
-
+    /** Цена при инициализации */
     private static final double DEFAULT_PRICE = 0;
 
 
     /**
-     * Инициализирует новый {@code src.barBossHouse.Dish} объект.
+     * Иициализирует новый объект.
      * @param name
-     *          Название
+     *          название
      * @param specification
-     *          Краткое описание
+     *          краткое описание
      * @see Dish#Dish(String, String, double)
      */
     public Dish(String name, String specification) {
@@ -30,13 +30,13 @@ public class Dish {
     }
 
     /**
-     * Инициализирует новый {@code src.barBossHouse.Dish} объект.
+     * Инициализирует новый {@code Dish} объект.
      * @param name
-     *          Название
+     *          название
      * @param specification
-     *          Краткое писание
+     *          краткое писание
      * @param price
-     *          Цена
+     *          цена
      * @see Dish#Dish(String, String)
      */
     public Dish(String name, String specification, double price) {
@@ -45,7 +45,7 @@ public class Dish {
     }
 
     /**
-     * Возвращает название блюда.
+     * @return название блюда
      */
     public String getName() {
         return name;
@@ -54,7 +54,7 @@ public class Dish {
     /**
      * Устанавливает новое название блюда.
      * @param name
-     *          Название
+     *          название
      */
     public void setName(String name) {
         this.name = name;

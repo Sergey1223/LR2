@@ -1,6 +1,10 @@
 package barBossHouse;
 
 public class Sorter {
+    /*
+    Если сам писал все сортировки, то красачик)
+    */
+
     public static void bubbleSort(Dish[] dishes){
         Dish temp;
         for (int i = dishes.length - 1; i >= 0; i--) {

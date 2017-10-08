@@ -14,33 +14,27 @@ public class Dish {
     /** Цена при инициализации */
     private static final double DEFAULT_PRICE = 0;
 
-
+//наоборот, более узкий конструктор вызывает более широкий this(name, specification, DEFAULT_PRICE); (FIXED)
     /**
      * Иициализирует новый объект.
-     * @param name
-     *          название
-     * @param specification
-     *          краткое описание
+     * @param name название
+     * @param specification краткое описание
      * @see Dish#Dish(String, String, double)
      */
     public Dish(String name, String specification) {
-        this.name = name;
-        this.specification = specification;
-        price = DEFAULT_PRICE;
+        this(name, specification, DEFAULT_PRICE);
     }
 
     /**
      * Инициализирует новый {@code Dish} объект.
-     * @param name
-     *          название
-     * @param specification
-     *          краткое писание
-     * @param price
-     *          цена
+     * @param name название
+     * @param specification краткое писание
+     * @param price цена
      * @see Dish#Dish(String, String)
      */
     public Dish(String name, String specification, double price) {
-        this(name, specification);
+        this.name = name;
+        this.specification = specification;
         this.price = price;
     }
 

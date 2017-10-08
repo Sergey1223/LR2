@@ -25,8 +25,7 @@ public class Order {
 
     /**
      * Инициализирует новый {@code Order} объект с заданной омкостью заказа
-     * @param capacity
-     *          емкость
+     * @param capacity емкость
      */
     public Order(int capacity) {
         dishes = new Dish[capacity];
@@ -34,39 +33,31 @@ public class Order {
 
     /**
      * Инициализирует новый {@code Order} объект
-     * @param dishes
-     *          массив блюд
+     * @param dishes массив блюд
      */
-    public Order(Dish[] dishes) {
-        this.dishes = dishes;
-        int i;
-        for (i = 0; i < dishes.length; i++) {
-            if(dishes[i] == null) {
-                dishesAmount = i + 1;
-                break;
-            }
-        }
-        if (i == dishes.length){
-            dishesAmount = dishes.length;
-        }
+    public Order(Dish[] dishes) {                   //Ты считаешь количество null? Ничего не перепутал? (FIXED)
+        //А еще можешь нативный System.arraycopy юзать и в этом конструкторе тоже (FIXED)
+        this.dishes = new Dish[dishes.length/DEFAULT_CAPACITY * DEFAULT_CAPACITY + DEFAULT_CAPACITY];
+        System.arraycopy(dishes, 0, this.dishes, 0, dishes.length);
+        dishesAmount = dishes.length;
     }
 
     /**
      * Добаляет блюдо в массив.
-     * @param dish
-     *          блюдо
+     * @param dish блюдо
      * @return {@code true}, если блюдо добавдено, иначе - {@code false}
      */
     public boolean addDish(Dish dish) {
-        for (int i = 0; i < dishes.length; i++) {
-            if(dishes[i] == null) {
-                dishes[i] = dish;
-                dishesAmount++;
-                return true;
-            }
+        // Опять проходишься по массиву,тут не нужно этого делать. (FIXED)
+        // Сверяешь, меньше ли фактический размер меньше длины массива и добавляешь. (FIXED)
+        // Если что расширяешь, что ниже и делаешь, только невпопад (FIXED)
+        if(dishesAmount != dishes.length){
+            dishes[++dishesAmount - 1] = dish;
+            return true;
         }
         Dish[] newDishes = new Dish[dishes.length * DEGREE_OF_INCREASE];
-        System.arraycopy(dishes, 0, newDishes, 0, dishes.length);
+        System.arraycopy(dishes, 0, newDishes, 0, dishes.length); //можешь до фактического размера копировать (я не понял,
+        // dishes полный же, больше чем dishes.length указать нельзя)
         newDishes[dishes.length] = dish;
         dishes = newDishes;
         dishesAmount++;
@@ -75,14 +66,13 @@ public class Order {
 
     /**
      * Удаляет первое найденное блюдо с заданным название.
-     * @param name
-     *          название
+     * @param name название
      * @return {@code true}, если блюдо удалено, иначе - {@code false}
      */
     private boolean removeDish(String name){
         for (int i = 0; i < dishes.length; i++) {
-            if(dishes[i].getName() == name){
-                System.arraycopy(dishes, i + 1, dishes, i, dishes.length - i - 2);
+            if(dishes[i].getName().equals(name)){                //ссылочные тмпы сраниваются через equals (FIXED)
+                System.arraycopy(dishes, i + 1, dishes, i, dishes.length - i - 2); //умница
                 dishesAmount--;
                 return true;
             }
@@ -105,7 +95,7 @@ public class Order {
     }
 
     /**
-     * @return общее чисо блюд.
+     * @return общее число блюд.
      */
     public int getDishesAmount(){
         return dishesAmount;
@@ -117,9 +107,9 @@ public class Order {
     public Dish[] getDishes(){
         Dish[] newDishes = new Dish[dishesAmount];
         System.arraycopy(dishes, 0, newDishes, 0, dishesAmount);
-        for (int i = 0; i < newDishes.length; i++) {
-            System.out.println(newDishes[i]);
-        }
+//        for (int i = 0; i < newDishes.length; i++) {
+//            System.out.println(newDishes[i]);  //а-та-та. Метод не должен делать ничего кроме удаления, в т.ч. вывода в консоль (использовал)
+//        }                                      // (использовал для проверки, а затем не удалили, да, косяк в общем)
         return newDishes;
     }
 
@@ -141,7 +131,7 @@ public class Order {
     public int getDishesAmount(String name){
         int counter = 0;
         for (int i = 0; i < dishesAmount; i++) {
-            if(dishes[i].getName() == name){
+            if(dishes[i].getName().equals(name)){ //такая же херня со сравнением (FIXED)
                 counter++;
             }
         }
@@ -149,21 +139,17 @@ public class Order {
     }
 
     /**
-     * @return массив названий заказанных блюд.
+     * @return массив названий заказанных блюд (без повторов).
      */
-    private String[] getDishesNames(){
-        String[] names = new String[dishesAmount];
-        for (int i = 0; i < dishesAmount; i++) {
-            for (int j = 0; j < i; j++) {
-                if(names[j] == dishes[i].getName()){
-                    break;
-                }
-                if (j == i - 1){
-                    names[i] = dishes[i].getName();
-                }
+    public String[] getDishesNames(){
+        String names = "";
+        int i;
+        for (i = 0; i < dishesAmount; i++) {
+            if(!names.contains(dishes[i].getName())){
+                names += dishes[i].getName() + " ";
             }
         }
-        return names;
+        return names.split("\\ ");
     }
 
     /**
